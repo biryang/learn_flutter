@@ -3,59 +3,50 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import 'package:flutter_start_app/screen/home_screen.dart';
+import 'package:flutter_start_app/widget/bottom_bar.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  TabController controller;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Startup Name Generator',
-      home: RandomWords(),
-    );
-  }
-}
-
-class RandomWords extends StatefulWidget {
-  @override
-  RandomWordsState createState() => RandomWordsState();
-}
-
-class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-
-  Widget _buildSuggestions() {
-    return ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return Divider(); /*2*/
-
-          final index = i ~/ 2; /*3*/
-          if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-          }
-          return _buildRow(_suggestions[index]);
-        });
-  }
-
-  Widget _buildRow(WordPair pair) {
-    return ListTile(
-      title: Text(
-        pair.asPascalCase,
-        style: _biggerFont,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.black,
+        accentColor: Colors.white,
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Startup Name Generator'),
+      home: DefaultTabController(
+        length: 4,
+        child: Scaffold(
+          body: TabBarView(
+            //슬라이드로 화면 스크린 전환 막기
+            physics: NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              //홈 화면 호출
+              HomeScreen(),
+              Container(
+                child: Center(
+                  child: Text('검색'),
+                ),
+              ),
+              Container(
+                child: Center(
+                  child: Text('저장'),
+                ),
+              ),
+              Container(
+                  child: Center(
+                child: Text('목록'),
+              )),
+            ],
+          ),
+          bottomNavigationBar: Bottom(),
+        ),
       ),
-      body: _buildSuggestions(),
     );
   }
 }
