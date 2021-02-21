@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizzler/question.dart';
 import 'package:quizzler/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -31,21 +32,47 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scoreKeeper = [];
 
-  int questionsNumber = 0;
+  void viewAlert(){
+    Alert(
+      context: context,
+      type: AlertType.info,
+      title: "Finished!",
+      desc: "You've reached the end of the quiz.",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "CANCEL",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            scoreKeeper.clear();
+            quizBrain.firstQuestion();
+          },
+          width: 120,
+        )
+      ],
+    ).show();
+  }
 
   void addScoreKeeper(bool answer) {
-    if (answer) {
-      scoreKeeper.add(Icon(
-        Icons.check,
-        color: Colors.green,
-      ));
-    } else {
-      scoreKeeper.add(Icon(
-        Icons.close,
-        color: Colors.red,
-      ));
-    }
-    questionsNumber += 1;
+    bool correctAnswer = quizBrain.getCorrectAnswer();
+
+    setState(() {
+      viewAlert();
+      if (answer == correctAnswer) {
+        scoreKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+      } else {
+        scoreKeeper.add(Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
+      }
+      quizBrain.nextQuestion();
+    });
   }
 
   @override
@@ -60,7 +87,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.getQuestionText(questionsNumber),
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,

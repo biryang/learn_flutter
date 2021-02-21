@@ -30,14 +30,19 @@ class QuizBrain {
         true),
   ];
   void nextQuestion(){
-    if(_questionNumber< _questionList.length)
+    if(_questionNumber< _questionList.length-1){
+      _questionNumber++;
+    }
+  }
+  void firstQuestion(){
+    _questionNumber=0;
   }
 
-  String getQuestionText(int questionNumber){
-    return _questionList[questionNumber].questionText;
+  String getQuestionText(){
+    return _questionList[_questionNumber].questionText;
   }
 
-  bool getCorrectAnswer(int questionNumber){
-    return _questionList[questionNumber].questionAnswer;
+  bool getCorrectAnswer(){
+    return _questionList[_questionNumber].questionAnswer;
   }
 }
