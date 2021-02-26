@@ -10,6 +10,8 @@ class Location {
           desiredAccuracy: LocationAccuracy.low); // 배터리 생각해서 low~high까지 잘 선택
       latitude = position.latitude;
       longitude = position.longitude;
+
+      print([latitude,longitude]);
     } catch (e) {
       print(e);
     }
