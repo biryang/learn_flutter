@@ -1,19 +1,19 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class NetworkHelper{
+class NetworkHelper {
   NetworkHelper(this.url);
+
   final String url;
 
-  Future getData() async{
+  Future getData() async {
     http.Response response = await http.get(url);
 
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       String data = response.body;
       var dataToJson = jsonDecode(data);
       return dataToJson;
-    }else{
+    } else {
       print(response.statusCode);
     }
   }
