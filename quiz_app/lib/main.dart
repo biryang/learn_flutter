@@ -15,16 +15,31 @@ class _MyAppState extends State<MyApp> {
   final _questions = const [
     {
       'questionText': '무슨 색을 좋아하시나요?',
-      'answers': ['검정', '빨강', '초록', '흰색']
+      'answers': [
+        {'text': '검정', 'score': 5},
+        {'text': '빨강', 'score': 4},
+        {'text': '초록', 'score': 3},
+        {'text': '흰색', 'score': 2},
+      ]
     },
     {
       'questionText': '어떤 동물을 좋아하시나요?',
-      'answers': ['토끼', '뱀', '코끼리', '사자']
+      'answers': [
+        {'text': '토끼', 'score': 5},
+        {'text': '뱀', 'score': 4},
+        {'text': '코끼리', 'score': 3},
+        {'text': '사자', 'score': 2},
+      ]
     },
   ];
-  int _questionIndex = 0;
 
-  void _answerQuestion() {
+  int _questionIndex = 0;
+  int _totalScore = 0;
+
+  void _answerQuestion(int score) {
+    _totalScore += score;
+    print(_totalScore);
+
     setState(() {
       _questionIndex += 1;
     });
@@ -48,7 +63,7 @@ class _MyAppState extends State<MyApp> {
                 questions: _questions,
                 questionIndex: _questionIndex,
               )
-            : Result(),
+            : Result(_totalScore),
       ),
     );
   }
