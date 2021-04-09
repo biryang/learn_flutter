@@ -36,6 +36,12 @@ class _MyHomePageState extends State<MyHomePage> {
       amount: 59.99,
       date: DateTime.now(),
     ),
+    Transaction(
+      id: 't2',
+      title: 'New T',
+      amount: 59.99,
+      date: DateTime.now(),
+    ),
   ];
 
   @override
@@ -51,13 +57,55 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             width: double.infinity,
             child: Card(
+              color: Colors.blue,
               child: Text('Chart'),
-              elevation: 10,
+              elevation: 5,
             ),
           ),
-          Card(
-            child: Text('List OF TX'),
-          ),
+          Column(
+            children: transactions.map((e) {
+              return Card(
+                child: Row(
+                  children: [
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.purple,
+                          width: 2,
+                        ),
+                      ),
+                      child: Text(
+                        e.amount.toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.purple),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          e.title,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          e.date.toString(),
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              );
+            }).toList(),
+          )
         ],
       ),
     );
