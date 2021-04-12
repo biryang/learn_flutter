@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:personal_expenses/transaction.dart';
 
 void main() {
@@ -78,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       child: Text(
-                        e.amount.toString(),
+                        '\$ ${e.amount}',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
@@ -96,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         Text(
-                          e.date.toString(),
+                          DateFormat.yMMMd().format(e.date),
                           style: TextStyle(color: Colors.grey),
                         ),
                       ],
