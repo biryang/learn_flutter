@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
@@ -11,21 +12,44 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
+  DateTime _selectedDate;
 
-  void submitData() {
+  void _submitData() {
+    if(amountController.text.isEmpty){
+      return;
+    }
     final enteredTitle = titleController.text;
     final enteredAmount = double.parse(amountController.text);
 
-    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+    if (enteredTitle.isEmpty || enteredAmount <= 0 ) {
       return;
+    }
+    if(_selectedDate == null){
+      _selectedDate = DateTime.now();
     }
 
     widget.addTx(
       enteredTitle,
       enteredAmount,
+      _selectedDate
     );
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+    ).then((value) {
+      if (value == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = value;
+      });
+    });
   }
 
   @override
@@ -45,14 +69,39 @@ class _NewTransactionState extends State<NewTransaction> {
               decoration: InputDecoration(labelText: 'Amount'),
               controller: amountController,
               keyboardType: TextInputType.number,
-              onSubmitted: (_) => submitData(),
+              onSubmitted: (_) => _submitData(),
+            ),
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(_selectedDate == null
+                        ? '오늘'
+                        : DateFormat.yMd().format(_selectedDate)),
+                  ),
+                  TextButton(
+                    onPressed: _presentDatePicker,
+                    child: Text(
+                      '날짜 선택',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.purple),
+                    ),
+                  )
+                ],
+              ),
             ),
             TextButton(
-              onPressed: submitData,
+              onPressed: _submitData,
               child: Text('Add Transaction'),
               style: ButtonStyle(
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.purple)),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.purple),
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
             )
           ],
         ),
